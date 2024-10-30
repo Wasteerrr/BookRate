@@ -3,7 +3,7 @@ import Book from '../Book/Book'
 
 interface Props  {}
 
-const CardList = (props: Props) => {
+const CardList: React.FC<Props> = (props: Props) : JSX.Element => {
   return (
     <div>
         <Book BookTitle='Strzygieł' Author='Donna Tartt' Rating={10} />

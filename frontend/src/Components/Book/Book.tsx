@@ -7,7 +7,7 @@ interface Props  {
   Rating: number;
 }
 
-const Book = ({BookTitle, Author, Rating}: Props) => {
+const Book: React.FC<Props> = ({BookTitle, Author, Rating}: Props) : JSX.Element => {
   return (
   <div className='book'>
      <img 
