@@ -21,9 +21,10 @@ const Book: React.FC<Props> = ({BookTitle, Author, Rating}: Props) : JSX.Element
         <p>Ocena {Rating}*</p>
     </div>
     <p className='info'>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequatur, repudiandae.
+        Lorem ipsum dolor , sit amet consectetur adipisicing elit. Consequatur, repudiandae.
     </p>
   </div>
 );
 }
 export default Book
+
