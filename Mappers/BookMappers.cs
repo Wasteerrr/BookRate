@@ -18,7 +18,8 @@ namespace api.Mappers
                 Title = bookModel.Title,
                 Author = bookModel.Author,
                 StarRating = bookModel.StarRating,
-                PublishYear = bookModel.PublishYear
+                PublishYear = bookModel.PublishYear,
+                Comments = bookModel.Comments.Select(c => c.ToCommentDto()).ToList()
             };
         }
 

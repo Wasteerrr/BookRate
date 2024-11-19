@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dtos.Comment;
 
 namespace api.Dtos.Book
 {
@@ -13,5 +14,6 @@ namespace api.Dtos.Book
         public string Author { get; set; } = string.Empty;
         public int StarRating { get; set; }
         public int PublishYear { get; set; }
+        public List<CommentDto> Comments {get; set; }
     }
 }

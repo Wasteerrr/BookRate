@@ -35,7 +35,7 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await _bookRepo.GetByIdAsync(id);
 
             if (book == null)
             {
@@ -49,8 +49,7 @@ namespace api.Controllers
         public async Task<IActionResult> Create([FromBody] CreateBookRequestDto bookDto)
         {
             var bookModel = bookDto.ToBookFromCreateDto();
-            await _context.Books.AddAsync(bookModel);
-            await _context.SaveChangesAsync();
+            await _bookRepo.CreateAsync(bookModel);
             return CreatedAtAction(nameof(GetById), new {id = bookModel.Id}, bookModel.ToBookDto());
         }
 
@@ -58,20 +57,12 @@ namespace api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateBookRequestDto updateDto)
         {
-            var bookModel = await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
+            var bookModel = await _bookRepo.UpdateAsync(id, updateDto);
 
             if (bookModel == null)
             {
                 return NotFound();
             }
-
-            bookModel.Key = updateDto.Key;
-            bookModel.Title = updateDto.Title;
-            bookModel.Author = updateDto.Author;
-            bookModel.StarRating = updateDto.StarRating;
-            bookModel.PublishYear = updateDto.PublishYear;
-
-            await _context.SaveChangesAsync();
 
             return Ok(bookModel.ToBookDto());
         }
@@ -80,16 +71,12 @@ namespace api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id) 
         {
-            var bookModel = await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
+            var bookModel = await _bookRepo.DeleteAsync(id);
 
             if (bookModel == null)
             {
                 return NotFound();
             }
-
-            _context.Books.Remove(bookModel);
-
-            await _context.SaveChangesAsync();
 
             return NoContent(); 
         }
