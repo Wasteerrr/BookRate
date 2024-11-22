@@ -49,9 +49,9 @@ namespace api.Repository
         {
             var books = _context.Books.Include(c => c.Comments).AsQueryable();
 
-            if(!string.IsNullOrWhiteSpace(query.Titile))
+            if(!string.IsNullOrWhiteSpace(query.Title))
             {
-                books = books.Where(s => s.Title.Contains(query.Titile)); 
+                books = books.Where(s => s.Title.Contains(query.Title)); 
             }
 
             if(!string.IsNullOrWhiteSpace(query.Author))
@@ -59,7 +59,18 @@ namespace api.Repository
                 books = books.Where(s => s.Author.Contains(query.Author));
             }
 
-            return await books.ToListAsync();
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if (query.SortBy.Equals("Title", StringComparison.OrdinalIgnoreCase))
+                {
+                    books = query.IsDescending ? books.OrderByDescending(s => s.Title) : books.OrderBy(s => s.Title);
+                }
+            }
+
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+            
+            return await books.Skip(skipNumber).Take(query.PageSize).ToListAsync();
 
         }
 
