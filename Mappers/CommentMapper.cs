@@ -20,5 +20,24 @@ namespace api.Mappers
                 BookId = commentModel.BookId
             };
         }
+
+        public  static Comment ToCommentFromCreate(this CreateCommentDto commentDto, int bookId)
+        {
+            return new Comment
+            {
+                Title = commentDto.Title,
+                Content = commentDto.Content,
+                BookId = bookId
+            };
+        }
+
+         public  static Comment ToCommentFromUpdate(this UpdateCommentRequestDto commentDto)
+        {
+            return new Comment
+            {
+                Title = commentDto.Title,
+                Content = commentDto.Content,
+            };
+        }
     }
 }

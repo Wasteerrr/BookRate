@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Book;
+using api.Helpers;
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,11 @@ namespace api.Repository
         public BookRepository(ApplicationDBContext context)
         {
             _context = context;
+        }
+
+        public Task<bool> BookExist(int id)
+        {
+            return _context.Books.AnyAsync(s => s.Id == id);
         }
 
         public async Task<Book> CreateAsync(Book bookModel)
@@ -39,9 +45,22 @@ namespace api.Repository
             return bookModel;
         }
 
-        public async Task<List<Book>> GetAllAsync()
+        public async Task<List<Book>> GetAllAsync(QueryObject query)
         {
-            return await _context.Books.Include(c => c.Comments).ToListAsync();
+            var books = _context.Books.Include(c => c.Comments).AsQueryable();
+
+            if(!string.IsNullOrWhiteSpace(query.Titile))
+            {
+                books = books.Where(s => s.Title.Contains(query.Titile)); 
+            }
+
+            if(!string.IsNullOrWhiteSpace(query.Author))
+            {
+                books = books.Where(s => s.Author.Contains(query.Author));
+            }
+
+            return await books.ToListAsync();
+
         }
 
         public async Task<Book?> GetByIdAsync(int id)
