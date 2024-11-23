@@ -12,6 +12,7 @@ namespace api.Interfaces
     {
         Task<List<Book>> GetAllAsync(QueryObject query);
         Task<Book?> GetByIdAsync(int id);
+        Task<Book?> GetByKeyAsync(string key);
         Task<Book> CreateAsync(Book bookModel);
         Task<Book?> UpdateAsync(int id, UpdateBookRequestDto bookDto);
         Task<Book?> DeleteAsync(int id);

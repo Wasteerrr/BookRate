@@ -17,7 +17,6 @@ namespace api.Mappers
                 Key = bookModel.Key,
                 Title = bookModel.Title,
                 Author = bookModel.Author,
-                StarRating = bookModel.StarRating,
                 PublishYear = bookModel.PublishYear,
                 Comments = bookModel.Comments.Select(c => c.ToCommentDto()).ToList()
             };
@@ -30,7 +29,6 @@ namespace api.Mappers
                 Key = bookDto.Key,
                 Title = bookDto.Title,
                 Author = bookDto.Author,
-                StarRating = bookDto.StarRating,
                 PublishYear = bookDto.PublishYear
             };
         }

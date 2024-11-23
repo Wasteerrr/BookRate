@@ -79,6 +79,11 @@ namespace api.Repository
             return await _context.Books.Include(c => c.Comments).FirstOrDefaultAsync(i => i.Id == id);
         }
 
+        public async Task<Book?> GetByKeyAsync(string key)
+        {
+            return await _context.Books.FirstOrDefaultAsync(s => s.Key == key);
+        }
+
         public async Task<Book?> UpdateAsync(int id, UpdateBookRequestDto bookDto)
         {
             var existingBook = await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
@@ -91,7 +96,6 @@ namespace api.Repository
             existingBook.Key = bookDto.Key;
             existingBook.Title = bookDto.Title;
             existingBook.Author = bookDto.Author;
-            existingBook.StarRating = bookDto.StarRating;
             existingBook.PublishYear = bookDto.PublishYear;
 
             await _context.SaveChangesAsync();

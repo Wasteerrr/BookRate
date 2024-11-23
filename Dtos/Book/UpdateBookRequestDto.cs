@@ -18,9 +18,6 @@ namespace api.Dtos.Book
         [MaxLength(100, ErrorMessage = "Autor nie może być dłuższy niż 100 znaków")]
         public string Author { get; set; } = string.Empty;
         [Required]
-        [Range(0,5)]
-        public int StarRating { get; set; }
-        [Required]
         [Range(0,3000)]
         public int PublishYear { get; set; }
     }

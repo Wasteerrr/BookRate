@@ -12,7 +12,6 @@ namespace api.Dtos.Book
         public string Key { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public string Author { get; set; } = string.Empty;
-        public int StarRating { get; set; }
         public int PublishYear { get; set; }
         public List<CommentDto> Comments {get; set; }
     }

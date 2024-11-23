@@ -20,10 +20,23 @@ namespace api.Data
 
         public DbSet<Book> Books {get; set; }
         public DbSet<Comment> Comments {get; set; }
+        public DbSet<Read> Reads {get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Read>(x => x.HasKey(p => new {p.AppUserId, p.BookId}));
+
+            builder.Entity<Read>()
+                .HasOne(u => u.AppUser)
+                .WithMany(u => u.Reads)
+                .HasForeignKey(p => p.AppUserId);
+
+             builder.Entity<Read>()
+                .HasOne(u => u.Book)
+                .WithMany(u => u.Reads)
+                .HasForeignKey(p => p.BookId);
 
             List<IdentityRole> roles = new List<IdentityRole>
             {

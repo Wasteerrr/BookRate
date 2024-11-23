@@ -51,13 +51,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fcb92350-b3b5-4d72-9895-18bc2efd099b",
+                            Id = "c6a4b2b3-6207-4fd9-96e9-ffd7ef45cd66",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "17cc714c-c490-4f14-9e10-90416e0c6577",
+                            Id = "7ae03579-2583-42e4-902a-3dae3d0254aa",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -258,10 +258,7 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PublishYear")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("StarRating")
+                    b.Property<int>("PublishYear")
                         .HasColumnType("int");
 
                     b.Property<string>("SubjectPlace")
@@ -312,6 +309,21 @@ namespace api.Migrations
                     b.HasIndex("BookId");
 
                     b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("api.Models.Read", b =>
+                {
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppUserId", "BookId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("Reads");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -374,9 +386,35 @@ namespace api.Migrations
                     b.Navigation("Book");
                 });
 
+            modelBuilder.Entity("api.Models.Read", b =>
+                {
+                    b.HasOne("api.Models.AppUser", "AppUser")
+                        .WithMany("Reads")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.Book", "Book")
+                        .WithMany("Reads")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("api.Models.AppUser", b =>
+                {
+                    b.Navigation("Reads");
+                });
+
             modelBuilder.Entity("api.Models.Book", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Reads");
                 });
 #pragma warning restore 612, 618
         }
