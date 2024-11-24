@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.Comment;
+using api.Extensions;
 using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Http.Metadata;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -19,11 +21,13 @@ namespace api.Controllers
     {
         private readonly ICommentRepository _commentRepo;
         private readonly IBookRepository _bookRepo;
+        private readonly UserManager<AppUser> _userManager;
 
-        public CommentController(ICommentRepository commentRepo, IBookRepository bookRepo)
+        public CommentController(ICommentRepository commentRepo, IBookRepository bookRepo, UserManager<AppUser> userManager)
         {
             _commentRepo = commentRepo;
             _bookRepo = bookRepo;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -71,7 +75,11 @@ namespace api.Controllers
                 return BadRequest("Książka nie istnieje");
             }
 
+            var username = User.GetUsername();
+            var appUser = await _userManager.FindByNameAsync(username);
+            
             var commentModel = commentDto.ToCommentFromCreate(bookId);
+            commentModel.AppUserId = appUser.Id;
             await _commentRepo.CreateAsync(commentModel);
             return CreatedAtAction(nameof(GetById), new { id = commentModel.Id}, commentModel.ToCommentDto());
         }

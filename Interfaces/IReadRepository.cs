@@ -10,5 +10,6 @@ namespace api.Interfaces
     {
         Task<List<Book>> GetUserRead(AppUser user);
         Task<Read> CreateAsync(Read read);
+        Task<Read> DeleteRead(AppUser appUser, string key);
     }
 }

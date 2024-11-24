@@ -47,7 +47,7 @@ namespace api.Repository
 
         public async Task<List<Book>> GetAllAsync(QueryObject query)
         {
-            var books = _context.Books.Include(c => c.Comments).AsQueryable();
+            var books = _context.Books.Include(c => c.Comments).ThenInclude(a => a.AppUser).AsQueryable();
 
             if(!string.IsNullOrWhiteSpace(query.Title))
             {

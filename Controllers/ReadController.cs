@@ -67,5 +67,27 @@ namespace api.Controllers
                 return Created();
             }
         }
+
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> DeleteRead(string key)
+        {
+            var username = User.GetUsername();
+            var appUser = await _userManager.FindByNameAsync(username);
+            var userRead = await _readRepo.GetUserRead(appUser);
+
+            var filteredBook = userRead.Where(s => s.Key.ToLower() == key.ToLower()).ToList();
+
+            if (filteredBook.Count() == 1)
+            {
+                await _readRepo.DeleteRead(appUser, key);
+            }
+            else
+            {
+                return BadRequest("Brak książki o tym kluczu w przeczytanych");
+            }
+
+            return Ok();
+        }
     }
 }
