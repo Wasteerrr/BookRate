@@ -14,7 +14,7 @@ namespace api.Models
         public string Title { get; set; } = string.Empty;
         public string Author { get; set; } = string.Empty;
         public int PublishYear { get; set; }
-        public byte[] Cover { get; set; } = Array.Empty<byte>();
+        public int Cover { get; set; } 
         public string Description { get; set; } = string.Empty;
         public string SubjectPlace { get; set; } = string.Empty;
         public string SubjectTimes { get; set; } = string.Empty;

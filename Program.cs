@@ -82,6 +82,8 @@ builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IReadRepository, ReadRepository>();
+builder.Services.AddScoped<IBMPService, BMPService>();
+builder.Services.AddHttpClient<IBMPService, BMPService>();
 
 var app = builder.Build();
 

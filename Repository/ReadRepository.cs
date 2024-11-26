@@ -24,9 +24,9 @@ namespace api.Repository
             return read;
         }
 
-        public async Task<Read> DeleteRead(AppUser appUser, string key)
+        public async Task<Read> DeleteRead(AppUser appUser, string title)
         {
-            var readModel = await _context.Reads.FirstOrDefaultAsync(x => x.AppUserId == appUser.Id && x.Book.Key.ToLower()  == key.ToLower());
+            var readModel = await _context.Reads.FirstOrDefaultAsync(x => x.AppUserId == appUser.Id && x.Book.Title.ToLower()  == title.ToLower());
 
             if(readModel == null)
             {

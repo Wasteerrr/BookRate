@@ -22,12 +22,14 @@ namespace api.Controllers
         private readonly ICommentRepository _commentRepo;
         private readonly IBookRepository _bookRepo;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IBMPService _bMPService;
 
-        public CommentController(ICommentRepository commentRepo, IBookRepository bookRepo, UserManager<AppUser> userManager)
+        public CommentController(ICommentRepository commentRepo, IBookRepository bookRepo, UserManager<AppUser> userManager, IBMPService bmpService)
         {
             _commentRepo = commentRepo;
             _bookRepo = bookRepo;
             _userManager = userManager;
+            _bMPService = bmpService;
         }
 
         [HttpGet]
@@ -62,23 +64,34 @@ namespace api.Controllers
             return Ok(comment.ToCommentDto());
         }
 
-        [HttpPost("{bookId:int}")]
-        public async Task<IActionResult> Create([FromRoute] int bookId, CreateCommentDto commentDto)
+        [HttpPost]
+        [Route("{title:alpha}")]
+        public async Task<IActionResult> Create([FromRoute] string title, CreateCommentDto commentDto)
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (!await _bookRepo.BookExist(bookId))
+            var book = await _bookRepo.GetByTitleAsync(title); 
+
+            if(book == null)
             {
-                return BadRequest("Książka nie istnieje");
+                book = await _bMPService.FindBookByTitleAsync(title);
+                if(book == null)
+                {
+                    return BadRequest("Książka o tym tytule nie istnieje");
+                }
+                else
+                {
+                    await _bookRepo.CreateAsync(book);
+                }
             }
 
             var username = User.GetUsername();
             var appUser = await _userManager.FindByNameAsync(username);
             
-            var commentModel = commentDto.ToCommentFromCreate(bookId);
+            var commentModel = commentDto.ToCommentFromCreate(book.Id);
             commentModel.AppUserId = appUser.Id;
             await _commentRepo.CreateAsync(commentModel);
             return CreatedAtAction(nameof(GetById), new { id = commentModel.Id}, commentModel.ToCommentDto());

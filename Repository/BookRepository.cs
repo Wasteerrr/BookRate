@@ -79,9 +79,9 @@ namespace api.Repository
             return await _context.Books.Include(c => c.Comments).FirstOrDefaultAsync(i => i.Id == id);
         }
 
-        public async Task<Book?> GetByKeyAsync(string key)
+        public async Task<Book?> GetByTitleAsync(string title)
         {
-            return await _context.Books.FirstOrDefaultAsync(s => s.Key == key);
+            return await _context.Books.FirstOrDefaultAsync(s => s.Title == title);
         }
 
         public async Task<Book?> UpdateAsync(int id, UpdateBookRequestDto bookDto)
