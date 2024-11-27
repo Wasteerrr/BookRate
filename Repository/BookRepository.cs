@@ -19,9 +19,9 @@ namespace api.Repository
             _context = context;
         }
 
-        public Task<bool> BookExist(int id)
+        public async Task<bool> BookExist(int id)
         {
-            return _context.Books.AnyAsync(s => s.Id == id);
+            return await _context.Books.AnyAsync(s => s.Id == id);
         }
 
         public async Task<Book> CreateAsync(Book bookModel)
