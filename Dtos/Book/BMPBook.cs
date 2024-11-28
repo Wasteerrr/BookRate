@@ -7,7 +7,6 @@ namespace api.Dtos.Book
 {
     public class BMPBook
     {
-        // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class Doc
     {
         public List<string> author_alternative_name { get; set; }

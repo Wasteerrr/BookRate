@@ -50,6 +50,7 @@ namespace api.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             if(!ModelState.IsValid)
@@ -67,6 +68,7 @@ namespace api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route("{title}")]
         public async Task<IActionResult> Create([FromRoute] string title, CreateCommentDto commentDto)
         {
@@ -96,7 +98,7 @@ namespace api.Controllers
             var commentModel = commentDto.ToCommentFromCreate(book.Id);
             commentModel.AppUserId = appUser.Id;
             await _commentRepo.CreateAsync(commentModel);
-            return CreatedAtAction(nameof(GetById), new { id = commentModel.Id}, commentModel.ToCommentDto());
+            return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
         }
 
         [HttpPut]

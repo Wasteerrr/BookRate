@@ -82,6 +82,7 @@ builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IReadRepository, ReadRepository>();
+builder.Services.AddScoped<IRatingRepository, RatingRepository>();
 builder.Services.AddScoped<IBMPService, BMPService>();
 builder.Services.AddHttpClient<IBMPService, BMPService>();
 
@@ -100,7 +101,7 @@ app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials()
-    //.WithOrigins("http://localhost:44351")
+    .WithOrigins("http://localhost:3000")
     .SetIsOriginAllowed(origin => true)
     );
 

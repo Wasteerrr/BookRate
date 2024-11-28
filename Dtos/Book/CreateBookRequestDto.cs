@@ -20,5 +20,13 @@ namespace api.Dtos.Book
         [Required]
         [Range(0,3000)]
         public int PublishYear { get; set; }
+        [Required]
+        public int Cover { get; set; }
+        [Required]
+        public string Subjects { get; set; } = string.Empty;
+        [Required]
+        public string SubjectPlace { get; set; } = string.Empty;
+        [Required]
+        public string SubjectTimes { get; set; } = string.Empty;
     }
 }

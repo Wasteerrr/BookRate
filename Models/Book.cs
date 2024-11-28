@@ -19,7 +19,8 @@ namespace api.Models
         public string SubjectPlace { get; set; } = string.Empty;
         public string SubjectTimes { get; set; } = string.Empty;
         public string Subjects { get; set; } = string.Empty;
-
+        public List<Rating> Ratings { get; set; } = new List<Rating>();
+        public decimal AverageRating { get; set; }
         public List<Comment> Comments { get; set; } = new List<Comment>();
         public List<Read> Reads { get; set; } = new List<Read>();
         

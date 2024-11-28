@@ -24,6 +24,7 @@ namespace api.Repository
             return await _context.Books.AnyAsync(s => s.Id == id);
         }
 
+
         public async Task<Book> CreateAsync(Book bookModel)
         {
             await _context.Books.AddAsync(bookModel);
@@ -47,7 +48,7 @@ namespace api.Repository
 
         public async Task<List<Book>> GetAllAsync(QueryObject query)
         {
-            var books = _context.Books.Include(c => c.Comments).ThenInclude(a => a.AppUser).AsQueryable();
+            var books = _context.Books.Include(c => c.Comments).Include(b => b.Ratings).ThenInclude(a => a.AppUser).AsQueryable();
 
             if(!string.IsNullOrWhiteSpace(query.Title))
             {
@@ -68,6 +69,7 @@ namespace api.Repository
             }
 
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
 
             
             return await books.Skip(skipNumber).Take(query.PageSize).ToListAsync();

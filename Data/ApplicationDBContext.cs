@@ -21,6 +21,7 @@ namespace api.Data
         public DbSet<Book> Books {get; set; }
         public DbSet<Comment> Comments {get; set; }
         public DbSet<Read> Reads {get; set; }
+        public DbSet<Rating> Ratings {get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

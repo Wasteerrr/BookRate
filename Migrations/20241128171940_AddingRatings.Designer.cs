@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241128171940_AddingRatings")]
+    partial class AddingRatings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f3eab7c4-e150-4f18-be67-737a24e8b397",
+                            Id = "1bfb5732-9ef1-4119-b1fe-87f91d58bdac",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "1c574975-937f-42c2-9246-82d020823517",
+                            Id = "f2466be0-c522-4298-b0ff-639de9ade901",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -245,9 +248,6 @@ namespace api.Migrations
                     b.Property<string>("Author")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("AverageRating")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Cover")
                         .HasColumnType("int");
@@ -441,7 +441,7 @@ namespace api.Migrations
                         .IsRequired();
 
                     b.HasOne("api.Models.Book", "Book")
-                        .WithMany("Ratings")
+                        .WithMany()
                         .HasForeignKey("BookId");
 
                     b.Navigation("AppUser");
@@ -476,8 +476,6 @@ namespace api.Migrations
             modelBuilder.Entity("api.Models.Book", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Ratings");
 
                     b.Navigation("Reads");
                 });

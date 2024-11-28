@@ -18,10 +18,29 @@ namespace api.Mappers
                 Title = bookModel.Title,
                 Author = bookModel.Author,
                 PublishYear = bookModel.PublishYear,
-                Comments = bookModel.Comments.Select(c => c.ToCommentDto()).ToList()
+                Cover = bookModel.Cover,
+                Subjects = bookModel.Subjects,
+                SubjectPlace = bookModel.SubjectPlace,
+                SubjectTimes = bookModel.SubjectTimes,
+                Ratings = (bookModel.Ratings ?? new List<Rating>())
+                    .Where(b => b != null)
+                    .Select(b => b.ToRatingDto())
+                    .ToList(),
+                AverageRating = CalculateAverageRating(bookModel.Ratings),
+                Comments = (bookModel.Comments ?? new List<Comment>())
+                    .Where(c => c != null)
+                    .Select(c => c.ToCommentDto())
+                    .ToList()
             };
         }
-
+        public static decimal CalculateAverageRating(List<Rating> ratings)
+        {
+            if (ratings == null || !ratings.Any())
+            {
+                return 0m;
+            }
+            return (decimal)ratings.Average(r => r.Score);
+        }
         public static Book ToBookFromCreateDto(this CreateBookRequestDto bookDto)
         {
             return new Book
@@ -29,7 +48,11 @@ namespace api.Mappers
                 Key = bookDto.Key,
                 Title = bookDto.Title,
                 Author = bookDto.Author,
-                PublishYear = bookDto.PublishYear
+                PublishYear = bookDto.PublishYear,
+                Cover = bookDto.Cover,
+                Subjects = bookDto.Subjects,
+                SubjectPlace = bookDto.SubjectPlace,
+                SubjectTimes = bookDto.SubjectTimes,
             };
         }
 

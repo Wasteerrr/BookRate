@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241127224347_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f3eab7c4-e150-4f18-be67-737a24e8b397",
+                            Id = "471bf68a-c644-45ee-99c3-94dc69d2f330",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "1c574975-937f-42c2-9246-82d020823517",
+                            Id = "d124627b-2527-4cf2-a010-126b3ce025fe",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -246,9 +249,6 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("AverageRating")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("Cover")
                         .HasColumnType("int");
 
@@ -317,36 +317,6 @@ namespace api.Migrations
                     b.HasIndex("BookId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("api.Models.Rating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Score")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("api.Models.Read", b =>
@@ -432,23 +402,6 @@ namespace api.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("api.Models.Rating", b =>
-                {
-                    b.HasOne("api.Models.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("api.Models.Book", "Book")
-                        .WithMany("Ratings")
-                        .HasForeignKey("BookId");
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("Book");
-                });
-
             modelBuilder.Entity("api.Models.Read", b =>
                 {
                     b.HasOne("api.Models.AppUser", "AppUser")
@@ -476,8 +429,6 @@ namespace api.Migrations
             modelBuilder.Entity("api.Models.Book", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Ratings");
 
                     b.Navigation("Reads");
                 });
