@@ -28,5 +28,13 @@ namespace api.Mappers
                 BookId = bookId
             };
         }
+
+        public static Rating ToRatingFromUpdate(this UpdateRatingRequestDto ratingDto)
+        {
+            return new Rating
+            {
+            Score = ratingDto.Score
+            };
+        }
     }
 }

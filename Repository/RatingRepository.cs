@@ -25,6 +25,20 @@ namespace api.Repository
             return ratingModel;
         }
 
+        public async Task<Rating> DeleteAsync(int id)
+        {        
+            var ratingModel = await _context.Ratings.FirstOrDefaultAsync(x => x.Id == id);
+
+            if(ratingModel == null)
+            {
+                return null;
+            }
+
+            _context.Ratings.Remove(ratingModel);
+            await _context.SaveChangesAsync();
+            return ratingModel;
+        }
+
         public async Task<List<Rating>> GetAllAsync(RatingQueryObject queryObject)
         {
             var ratings = _context.Ratings.Include(a => a.AppUser).AsQueryable();
@@ -42,6 +56,23 @@ namespace api.Repository
         public async Task<Rating?> GetByIdAsync(int id)
         {
             return await _context.Ratings.Include(a => a.AppUser).FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<Rating> UpdateAsync(int id, Rating ratingModel)
+        {
+            var existingRating = await _context.Ratings.FindAsync(id);
+
+            if(existingRating == null)
+            {
+                return null;
+            }
+
+            existingRating.Score = ratingModel.Score;
+
+            await _context.SaveChangesAsync();
+
+            return existingRating;
+
         }
     }
 }

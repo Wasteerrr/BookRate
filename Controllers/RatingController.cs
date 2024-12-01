@@ -101,5 +101,46 @@ namespace api.Controllers
           
         }
 
+        [HttpPut]
+        [Route("{id:int}")]
+        [Authorize]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateRatingRequestDto updateDto)
+        {
+             if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var rating = await _ratingRepo.UpdateAsync(id, updateDto.ToRatingFromUpdate());
+
+            if(rating == null)
+            {
+                return NotFound("Ocena nie znaleziona ");
+            }
+
+            return Ok(rating.ToRatingDto());
+
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        [Authorize]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var ratingModel = await _ratingRepo.DeleteAsync(id);
+
+            if(ratingModel == null)
+            {
+                return NotFound("Ocena nie znaleziona");
+            }
+
+            return Ok(ratingModel);
+        }
+
     }
 }
