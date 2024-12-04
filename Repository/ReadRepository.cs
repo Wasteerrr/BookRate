@@ -49,7 +49,6 @@ namespace api.Repository
                 Author = book.Book.Author,
                 PublishYear = book.Book.PublishYear,
                 Cover = book.Book.Cover,
-                Description = book.Book.Description,
                 SubjectPlace = book.Book.SubjectPlace,
                 SubjectTimes = book.Book.SubjectTimes,
                 Subjects = book.Book.Subjects
