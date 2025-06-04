@@ -11,4 +11,7 @@ Projekt wykorzystuje GitHub Actions do automatycznego budowania i testowania apl
   2. Budowanie aplikacji
   3. Testowanie
 
-Workflow znajduje się w `.github/workflows/ci-cd.yml`.
+Workflow znajduje się w `.github/workflows/main_bookrate.yml`.
+
+
+  ## 
